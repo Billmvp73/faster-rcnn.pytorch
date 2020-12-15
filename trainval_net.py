@@ -32,7 +32,7 @@ from model.utils.net_utils import weights_normal_init, save_net, load_net, \
 
 from model.faster_rcnn.vgg16 import vgg16
 from model.faster_rcnn.resnet import resnet
-
+from model.faster_rcnn.alexnet import alexnet
 def parse_args():
   """
   Parse input arguments
@@ -42,7 +42,7 @@ def parse_args():
                       help='training dataset',
                       default='pascal_voc', type=str)
   parser.add_argument('--net', dest='net',
-                    help='vgg16, res101',
+                    help='vgg16, res101', 'alexnet',
                     default='vgg16', type=str)
   parser.add_argument('--start_epoch', dest='start_epoch',
                       help='starting epoch',
@@ -242,6 +242,8 @@ if __name__ == '__main__':
     fasterRCNN = resnet(imdb.classes, 50, pretrained=True, class_agnostic=args.class_agnostic)
   elif args.net == 'res152':
     fasterRCNN = resnet(imdb.classes, 152, pretrained=True, class_agnostic=args.class_agnostic)
+  elif args.net == 'alexnet':
+    fasterRCNN = alexnet(imdb.classes, pretrained=True, class_agnostic=args.class_agnostic)
   else:
     print("network is not defined")
     pdb.set_trace()
@@ -326,8 +328,9 @@ if __name__ == '__main__':
       # backward
       optimizer.zero_grad()
       loss.backward()
-      if args.net == "vgg16":
+      if args.net == "vgg16" or args.net == 'alexnet':
           clip_gradient(fasterRCNN, 10.)
+          # do we need to do something with alexnet?
       optimizer.step()
 
       if step % args.disp_interval == 0:
