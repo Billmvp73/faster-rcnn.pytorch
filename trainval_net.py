@@ -42,7 +42,7 @@ def parse_args():
                       help='training dataset',
                       default='pascal_voc', type=str)
   parser.add_argument('--net', dest='net',
-                    help='vgg16, res101', 'alexnet',
+                    help='vgg16, res101, alexnet',
                     default='vgg16', type=str)
   parser.add_argument('--start_epoch', dest='start_epoch',
                       help='starting epoch',
